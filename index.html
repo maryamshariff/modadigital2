@@ -1,0 +1,174 @@
+<style>
+  div {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+  }
+
+  .cats {
+    display: inline-block;
+    margin-right: 300px; /* Increase the margin-right value for more space */
+    margin-bottom: 300px;
+    opacity: 0; /* Set initial opacity to 1 */
+    transition: opacity 0.5s ease;
+  }
+
+  .diamond {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  .red {
+    background-color: #BEB8EB;
+  }
+
+  .blue {
+    background-color: black;
+  }
+
+  .yellow {
+    background-color: black;
+  }
+
+  .pink {
+    background-color: black;
+  }
+
+  .light-blue {
+    background-color: black;
+  }
+
+  .background {
+    position: absolute;
+    background-color: black;
+    width: 100vw;  /* Ensures the background covers the entire viewport width */
+    height: 100vh; 
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+    overflow: hidden; /* Ensures the elements don't overflow outside */
+  }
+</style>
+
+<body>
+  <section class="background">
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
+  <script>
+    /* global nn */
+
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    let pixelCounter = 0;
+    let maxPixels = (screenWidth / 40) * (screenHeight / 40); // Max number of pixels based on screen size
+
+    function getRandomColor() {
+      const colors = ['red', 'blue', 'yellow', 'pink', 'light-blue'];
+      const randomIndex = Math.floor(Math.random() * colors.length);
+      return colors[randomIndex];
+    }
+
+    function newPixel() {
+      if (pixelCounter >= maxPixels) {
+        resetAnimation(); // Reset the animation when max pixels are reached
+      } else {
+        const div = nn.create('div');
+        if (nn.random() > 0.5) {
+          div.setAttribute('class', 'diamond ' + getRandomColor());
+        } else {
+          const colorClass = getRandomColor();
+          div.setAttribute('class', colorClass);
+        }
+        div.addTo('.background');
+        pixelCounter++;
+      }
+    }
+
+    function resetAnimation() {
+      const background = nn.get('.background');
+      background.innerHTML = ''; // Clear all blocks
+      pixelCounter = 0; // Reset the pixel counter
+      animation(); // Restart the animation
+    }
+
+    function animation() {
+      newPixel();
+      setTimeout(animation, 25); // Loop the animation with a delay
+    }
+
+    nn.on('load', animation);
+
+    /* cats */
+    const clickLimit = 1000;
+    let clickCounter = 0;
+
+    const imageOrder = [
+      'mindflown1.png',
+      'mindflown2.png',
+      'mindflown3.png',
+      'cyberpunk1.png',
+      'mindflow4.png',
+      'stacia1.png',
+      'eid1.png',
+      'josh1.png',
+      'circle1.png',
+      'neon1.png',
+      'sunset.png',
+      'green.png',
+      'stacia2p.png',
+      'josh2p.png',
+      'IMG_6680.jpg',
+      'IMG_6701.jpg',
+      'IMG_6702.jpg',
+      'IMG_6703.jpg',
+      'IMG_6704.jpg',
+      'IMG_6705.jpg',
+      'IMG_6706.jpg',
+      'IMG_6707.jpg',
+      'IMG_6708.jpg',
+      'IMG_6710.jpg',
+      'IMG_6711.jpg',
+      'IMG_6712.jpg',
+      'IMG_6713.jpg',
+      'IMG_6714.jpg',
+      'IMG_6715.jpg',
+      'IMG_6717.jpg',
+      'IMG_6718.jpg',
+      'IMG_6719.jpg',
+      'IMG_6720.jpg',
+      'IMG_6721.jpg',
+      'IMG_6723.jpg',
+      'IMG_6724.jpg',
+    ];
+
+    function newPatch() {
+      if (clickCounter >= clickLimit) {
+      } else {
+        const div = nn.create('div');
+        const img = nn.create('img');
+        const imageUrl = imageOrder[clickCounter % imageOrder.length];
+        img.setAttribute('src', imageUrl);
+        img.setAttribute('width', '300');
+        img.setAttribute('height', '300');
+        div.setAttribute('class', 'cats');
+
+        div.appendChild(img);
+        div.addTo('body');
+
+        // Trigger a reflow to apply the initial opacity transition
+      	div.offsetHeight;
+        div.style.opacity = 1;
+        clickCounter++;
+      }
+    }
+    nn.on('click', newPatch);
+  </script>
+</body>
+
+</body>
+
+
+
+
+
+
